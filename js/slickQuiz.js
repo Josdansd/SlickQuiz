@@ -336,6 +336,10 @@
                      e.stopPropagation();
                      var $checkbox = $(this).children('input');
                      $checkbox.prop('checked', !$checkbox[0].checked);
+                     if ( $(this).siblings().hasClass("selected") ) {
+                         $(this).siblings().removeClass("selected");
+                     }
+                     $(this).toggleClass('selected');
                 });
 
                 // Toggle the start button OR start the quiz if start button is disabled
