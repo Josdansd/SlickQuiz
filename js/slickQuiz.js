@@ -289,6 +289,12 @@
                                 answerHTML.append(answerContent);
                             }
                         }
+                        
+                        $quizArea.children('ol').find('li > ul > li').on('click', function(e) {
+                          e.stopPropagation();
+                          var $checkbox = $(this).children('input');
+                          $checkbox.prop('checked', !$checkbox[0].checked);
+                        });
 
                         // Append answers to question
                         questionHTML.append(answerHTML);
