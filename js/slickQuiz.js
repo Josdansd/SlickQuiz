@@ -637,7 +637,7 @@
                     // If response messaging is set to show upon quiz completion, show it now
                     if (plugin.config.completionResponseMessaging) {
                         $(_element + ' .button:not(' + _tryAgainBtn + '), ' + _element + ' ' + _questionCount).hide();
-                        $(_element + ' ' + _question + ', ' + _element + ' ' + _answers + ', ' + _element + ' ' + _responses).show();
+                        $(_element + ' ' + _question + ', ' + _element + ' ' + _answers + ', ' + _element + ' ' + _responses).show().css('display', 'block');
                         $quizResults.append($(_element + ' ' + _questions)).fadeIn(500, kN(key,1));
                     } else {
                         $quizResults.fadeIn(500, kN(key,1)); // 1st notch on key must be on both sides of if/else, otherwise key won't turn
