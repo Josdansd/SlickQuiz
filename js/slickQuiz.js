@@ -283,7 +283,7 @@
 
                                 var optionLabel = '<label for="' + optionId + '">' + answer.option + '</label>';
 
-                                var answerContent = $('<li></li>')
+                                var answerContent = $('<li><div></div></li>')
                                     .append(input)
                                     .append(optionLabel);
                                 answerHTML.append(answerContent);
