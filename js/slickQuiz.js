@@ -289,12 +289,6 @@
                                 answerHTML.append(answerContent);
                             }
                         }
-                        
-                        $quizArea.children('ol').find('li > ul > li').on('click', function(e) {
-                          e.stopPropagation();
-                          var $checkbox = $(this).children('input');
-                          $checkbox.prop('checked', !$checkbox[0].checked);
-                        });
 
                         // Append answers to question
                         questionHTML.append(answerHTML);
@@ -337,6 +331,12 @@
 
                 // Add the quiz content to the page
                 $quizArea.append(quiz);
+                
+                $quizArea.children('ol').find('li > ul > li').on('click', function(e) {
+                     e.stopPropagation();
+                     var $checkbox = $(this).children('input');
+                     $checkbox.prop('checked', !$checkbox[0].checked);
+                });
 
                 // Toggle the start button OR start the quiz if start button is disabled
                 if (plugin.config.skipStartButton || $quizStarter.length == 0) {
