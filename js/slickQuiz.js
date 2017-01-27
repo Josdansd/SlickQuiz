@@ -338,7 +338,7 @@
                     plugin.method.startQuiz.apply (this, [{callback: plugin.config.animationCallbacks.startQuiz}]); // TODO: determine why 'this' is being passed as arg to startQuiz method
                     kN(key,3).apply (null, []);
                 } else {
-                    $quizStarter.fadeIn(500, kN(key,3)); // 3d notch on key must be on both sides of if/else, otherwise key won't turn
+                    $quizStarter.fadeIn(500, kN(key,3)).css('display', 'block'); // 3d notch on key must be on both sides of if/else, otherwise key won't turn
                 }
 
                 internal.method.turnKeyAndGo (key, options && options.callback ? options.callback : function () {});
