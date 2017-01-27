@@ -356,7 +356,7 @@
                     if (firstQuestion.length) {
                         firstQuestion.fadeIn(500, function () {
                             if (options && options.callback) options.callback ();
-                        });
+                        }).css("display","block");
                     }
                 }
 
