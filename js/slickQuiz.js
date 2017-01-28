@@ -627,6 +627,10 @@
                     $(_quizScore + ' span').html(plugin.config.scoreTemplateText
                         .replace('%score', displayScore).replace('%total', questionCount));
                 }
+                
+                $quizName.append('<div class="percentage"><div class="percentage-border"><div class="percentage-circle"><b>'
+                                 + (score / questionCount).toFixed(2)*100 + "%" + 
+                                 '</b></div></div></div>');
 
                 if (plugin.config.disableRanking) {
                     $(_quizLevel).remove()
