@@ -334,7 +334,6 @@
                 $quizArea.append(quiz);
                 
                 $quizArea.children('ol').find('li > ul > li > div > label').on('click', function(e) {
-                     e.stopPropagation();
                      var $checkbox = $(this).parents('li').first().children('div').children('input');
                      if ( $checkbox.is("[type='radio']") ) {
                          $checkbox.prop('checked', !$checkbox[0].checked);
@@ -346,6 +345,7 @@
                          $checkbox.prop('checked', !$checkbox[0].checked);
                          $(this).parents('li').first().toggleClass('selected');
                      }
+                     // e.stopPropagation();
                 });
 
                 // Toggle the start button OR start the quiz if start button is disabled
