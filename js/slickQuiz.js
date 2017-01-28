@@ -336,7 +336,7 @@
                 
                 $quizArea.children('ol').find('li > ul > li').on('click', function(e) {
                      e.stopPropagation();
-                     var $checkbox = $(this).children('input');
+                     var $checkbox = $(this).children('div').children('input');
                      $checkbox.prop('checked', !$checkbox[0].checked);
                      if ( $(this).siblings().hasClass("selected") ) {
                          $(this).siblings().removeClass("selected");
