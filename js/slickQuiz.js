@@ -337,14 +337,12 @@
                      e.stopPropagation();
                      var $checkbox = $(this).children('div').children('input');
                      if ( $checkbox.is("[type='radio']") ) {
-                         console.log('selección única detectada');
                          $checkbox.prop('checked', !$checkbox[0].checked);
                          if ( $(this).siblings().hasClass("selected") ) {
                              $(this).siblings().removeClass("selected");
                          }
                          $(this).toggleClass('selected');
                      } else if ( $checkbox.is("[type='checkbox']") ) {
-                         console.log('multiple selección detectada');
                          $checkbox.prop('checked', !$checkbox[0].checked);
                          $(this).toggleClass('selected');
                      }
@@ -488,7 +486,7 @@
                 }
 
                 // Toggle appropriate response (either for display now and / or on completion)
-                questionLI.find(correctResponse ? _correctResponse : _incorrectResponse).show();
+                questionLI.find(correctResponse ? _correctResponse : _incorrectResponse).show().css('display', 'block');
 
                 // If perQuestionResponseMessaging is enabled, toggle response and navigation now
                 if (plugin.config.perQuestionResponseMessaging) {
