@@ -334,7 +334,6 @@
                 $quizArea.append(quiz);
                 
                 $quizArea.children('ol').find('li > ul > li').on('click', function(e) {
-                     e.stopImmediatePropagation();
                      var $checkbox = $(this).children('div').children('input');
                      if ( $checkbox.is("[type='radio']") ) {
                          $checkbox.prop('checked', !$checkbox[0].checked);
@@ -349,7 +348,6 @@
                 });
                 
                 $quizArea.children('ol').find('li > ul > li > div > label').on('click', function(e) {
-                    e.stopImmediatePropagation();
                     $(this).closest('li').trigger('click');
                 });
 
