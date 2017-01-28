@@ -530,7 +530,7 @@
 
                 if (nextQuestion.length) {
                     currentQuestion.fadeOut(300, function(){
-                        nextQuestion.find(_prevQuestionBtn).show().end().fadeIn(500, kN(key,1));
+                        nextQuestion.find(_prevQuestionBtn).show().end().fadeIn(500, kN(key,1)).css('display', 'block');
                         if (!nextQuestion.find(_prevQuestionBtn).show().end().length) kN(key,1).apply (null, []); // 1st notch on key must be passed even if there's no "back" button
                     });
                 } else {
@@ -559,8 +559,8 @@
                         questionLI.find(_answers).show();
                         questionLI.find(_answer).removeClass(correctResponseClass).removeClass(incorrectResponseClass);
                         questionLI.find('input').prop('disabled', false);
-                        questionLI.find(_answers).fadeIn(500, kN(key,1)); // 1st notch on key must be on both sides of if/else, otherwise key won't turn
-                        questionLI.find(_checkAnswerBtn).fadeIn(500, kN(key,2));
+                        questionLI.find(_answers).fadeIn(500, kN(key,1)).css('display', 'block'); // 1st notch on key must be on both sides of if/else, otherwise key won't turn
+                        questionLI.find(_checkAnswerBtn).fadeIn(500, kN(key,2)).css('display', 'block');
                         questionLI.find(_nextQuestionBtn).hide();
 
                         // if question is first, don't show back button on question
@@ -590,7 +590,7 @@
                             prevQuestion.find(_prevQuestionBtn).hide();
                         }
 
-                        prevQuestion.fadeIn(500, kN(key,1));
+                        prevQuestion.fadeIn(500, kN(key,1)).css('display', 'block');
                         kN(key,2).apply (null, []); // 2nd notch on key must be on both sides of if/else, otherwise key won't turn
                     });
                 }
@@ -640,9 +640,9 @@
                     if (plugin.config.completionResponseMessaging) {
                         $(_element + ' .button:not(' + _tryAgainBtn + '), ' + _element + ' ' + _questionCount).hide();
                         $(_element + ' ' + _question + ', ' + _element + ' ' + _answers + ', ' + _element + ' ' + _responses).show().css('display', 'block');
-                        $quizResults.append($(_element + ' ' + _questions)).fadeIn(500, kN(key,1));
+                        $quizResults.append($(_element + ' ' + _questions)).fadeIn(500, kN(key,1)).css('display', 'block');
                     } else {
-                        $quizResults.fadeIn(500, kN(key,1)); // 1st notch on key must be on both sides of if/else, otherwise key won't turn
+                        $quizResults.fadeIn(500, kN(key,1)).css('display', 'block'); // 1st notch on key must be on both sides of if/else, otherwise key won't turn
                     }
                 });
 
