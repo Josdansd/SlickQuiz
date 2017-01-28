@@ -350,7 +350,7 @@
                 
                 $quizArea.children('ol').find('li > ul > li > div > label').on('click', function(e) {
                     e.stopImmediatePropagation();
-                    $(this).parents('li').first().trigger('click');
+                    $(this).closest('li').trigger('click');
                 });
 
                 // Toggle the start button OR start the quiz if start button is disabled
