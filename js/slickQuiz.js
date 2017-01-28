@@ -337,11 +337,18 @@
                 $quizArea.children('ol').find('li > ul > li').on('click', function(e) {
                      e.stopPropagation();
                      var $checkbox = $(this).children('div').children('input');
-                     $checkbox.prop('checked', !$checkbox[0].checked);
-                     if ( $(this).siblings().hasClass("selected") ) {
-                         $(this).siblings().removeClass("selected");
+                     if ( $checkbox.is("[type='radio']") ) {
+                         console.log('selección única detectada');
+                         $checkbox.prop('checked', !$checkbox[0].checked);
+                         if ( $(this).siblings().hasClass("selected") ) {
+                             $(this).siblings().removeClass("selected");
+                         }
+                         $(this).toggleClass('selected');
+                     } else if ( $checkbox.is("[type='checkbox']") ) {
+                         console.log('multiple selección detectada');
+                         $checkbox.prop('checked', !$checkbox[0].checked);
+                         $(this).toggleClass('selected');
                      }
-                     $(this).toggleClass('selected');
                 });
 
                 // Toggle the start button OR start the quiz if start button is disabled
