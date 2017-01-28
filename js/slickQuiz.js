@@ -301,7 +301,6 @@
                             var responseHTML = $('<ul class="' + responsesClass + '"></ul>');
                             responseHTML.append('<li class="' + correctResponseClass + '">' + question.correct + '</li>');
                             responseHTML.append('<li class="' + incorrectResponseClass + '">' + question.incorrect + '</li>');
-
                             // Append responses to question
                             questionHTML.append(responseHTML);
                         }
@@ -506,7 +505,7 @@
                         questionLI.addClass(completeClass);
                     }
                     questionLI.find('input').prop('disabled', true);
-                    questionLI.find(_responses).show();
+                    questionLI.find(_responses).show().css('display', 'block');
                     questionLI.find(_nextQuestionBtn).fadeIn(300, kN(key,1)).css('display', 'block');
                     questionLI.find(_prevQuestionBtn).fadeIn(300, kN(key,2)).css('display', 'block');
                     if (!questionLI.find(_prevQuestionBtn).length) kN(key,2).apply (null, []); // 2nd notch on key must be passed even if there's no "back" button
