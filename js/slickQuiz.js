@@ -333,18 +333,18 @@
                 // Add the quiz content to the page
                 $quizArea.append(quiz);
                 
-                $quizArea.children('ol').find('li > ul > li').on('click', function(e) {
+                $quizArea.children('ol').find('li > ul > li > div > label').on('click', function(e) {
                      e.stopPropagation();
-                     var $checkbox = $(this).children('div').children('input');
+                     var $checkbox = $(this).parents('li').first().children('div').children('input');
                      if ( $checkbox.is("[type='radio']") ) {
                          $checkbox.prop('checked', !$checkbox[0].checked);
-                         if ( $(this).siblings().hasClass("selected") ) {
-                             $(this).siblings().removeClass("selected");
+                         if ( $(this).parents('li').first().siblings().hasClass("selected") ) {
+                             $(this).parents('li').first().siblings().removeClass("selected");
                          }
-                         $(this).toggleClass('selected');
+                         $(this).parents('li').first().toggleClass('selected');
                      } else if ( $checkbox.is("[type='checkbox']") ) {
                          $checkbox.prop('checked', !$checkbox[0].checked);
-                         $(this).toggleClass('selected');
+                         $(this).parents('li').first().toggleClass('selected');
                      }
                 });
 
