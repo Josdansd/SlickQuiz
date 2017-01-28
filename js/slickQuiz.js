@@ -333,19 +333,24 @@
                 // Add the quiz content to the page
                 $quizArea.append(quiz);
                 
-                $quizArea.children('ol').find('li > ul > li > div > label').on('click', function(e) {
-                     var $checkbox = $(this).parents('li').first().children('div').children('input');
+                $quizArea.children('ol').find('li > ul > li').on('click', function(e) {
+                     e.stopPropagation();
+                     var $checkbox = $(this).children('div').children('input');
                      if ( $checkbox.is("[type='radio']") ) {
                          $checkbox.prop('checked', !$checkbox[0].checked);
-                         if ( $(this).parents('li').first().siblings().hasClass("selected") ) {
-                             $(this).parents('li').first().siblings().removeClass("selected");
+                         if ( $(this).siblings().hasClass("selected") ) {
+                             $(this).siblings().removeClass("selected");
                          }
-                         $(this).parents('li').first().toggleClass('selected');
+                         $(this).toggleClass('selected');
                      } else if ( $checkbox.is("[type='checkbox']") ) {
                          $checkbox.prop('checked', !$checkbox[0].checked);
-                         $(this).parents('li').first().toggleClass('selected');
+                         $(this).toggleClass('selected');
                      }
-                     // e.stopPropagation();
+                });
+                
+                $quizArea.children('ol').find('li > ul > li > div > label').on('click', function(e) {
+                    e.stopPropagation();
+                    $quizArea.children('ol').find('li > ul > li').trigger('click');
                 });
 
                 // Toggle the start button OR start the quiz if start button is disabled
