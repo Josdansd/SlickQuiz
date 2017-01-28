@@ -644,6 +644,7 @@
                             inputHTML += '</span>';
                         inputHTML += '</label>';
                     inputHTML += '</span>';
+                    inputHTML += '<div class="get-certify">Obtener Certificado</div>';
                     $quizResults.append(inputHTML);
                     $('span.certify-input > input').blur(function() {
                       if( $(this).val() ) {
