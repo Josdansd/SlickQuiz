@@ -283,10 +283,12 @@
 
                                 var optionLabel = '<label for="' + optionId + '">' + answer.option + '</label>';
 
-                                var answerContent = $('<li><div></div></li>')
+                                var readyContent = $('<li></li>');
+                                var answerContent = $('<div></div>')
                                     .append(input)
                                     .append(optionLabel);
-                                answerHTML.append(answerContent);
+                                readyContent.append(answerContent)
+                                answerHTML.append(readyContent);
                             }
                         }
 
