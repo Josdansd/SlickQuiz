@@ -628,9 +628,31 @@
                         .replace('%score', displayScore).replace('%total', questionCount));
                 }
                 
+                var quizPercentage = (score / questionCount).toFixed(2)*100;
+                
                 $quizName.append('<div class="percentage"><div class="percentage-border"><div class="percentage-circle"><b>'
-                                 + (score / questionCount).toFixed(2)*100 + "%" + 
+                                 + quizPercentage + "%" + 
                                  '</b></div></div></div>');
+                
+                if ( quizPercentage > 75 ) {
+                    var inputHTML;
+                    inputHTML = '<span class="certify-input certify-name input--filled">';
+                        inputHTML += '<input class="certify-field field-style" type="text" id="certifyInput">';
+                        inputHTML += '<label class="certify-label label-style orange-label" for="certifyInput">';
+                            inputHTML += '<span class="certify-label-content label-content-style">';
+                                inputHTML += 'Nombre Completo';
+                            inputHTML += '</span>';
+                        inputHTML += '</label>';
+                    inputHTML += '</span>';
+                    $quizResults.append(inputHTML);
+                    $('span.certify-input > input').blur(function() {
+                      if( $(this).val() ) {
+                        $(this).closest('span.certify-input').addClass('input--filled');
+                      } else {
+                        $(this).closest('span.certify-input').removeClass('input--filled');
+                      }
+                    });
+                }
 
                 if (plugin.config.disableRanking) {
                     $(_quizLevel).remove()
