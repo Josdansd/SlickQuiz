@@ -663,25 +663,29 @@
                       }
                     });
                     $('.get-certify').on('click', function() {
+                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
                         var nameValidator = new RegExp(/^[A-Za-zÀ-ú\s]+$/);
                         var nameInput = $('span.certify-input > input').val();
                         if (nameInput != '' && nameValidator.test(nameInput)) {
-                            console.log('input lleno y con nombres válidos');
-                            var certify;
-                            certify = '<div class="certify">';
-                                certify += '<img src="http://i.imgur.com/v24ae6r.jpg">';
-                                certify += '<span class="certify-username">';
-                                    certify += nameInput;
-                                certify += '</span>';
-                                certify += '<span class="certify-percentage">';
-                                    certify += quizPercentage;
-                                certify += '</span>';
-                                certify += '<div id="certifySharer" class="certify-sharer">';
-                                    certify += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Compartir en Facebook';
+                            setTimeout( function() {
+                                console.log('input lleno y con nombres válidos');
+                                var certify;
+                                certify = '<div class="certify">';
+                                    certify += '<img src="http://i.imgur.com/v24ae6r.jpg">';
+                                    certify += '<span class="certify-username">';
+                                        certify += nameInput;
+                                    certify += '</span>';
+                                    certify += '<span class="certify-percentage">';
+                                        certify += quizPercentage;
+                                    certify += '</span>';
+                                    certify += '<div id="certifySharer" class="certify-sharer">';
+                                        certify += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Compartir en Facebook';
+                                    certify += '</div>';
                                 certify += '</div>';
-                            certify += '</div>';
-                            $quizResults.empty();
-                            $quizResults.append(certify);
+                                $quizResults.empty();
+                                $quizResults.append(certify);
+                                new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
+                            }, 1500);
                             function dataURItoBlob(dataURI) {
                                 var byteString = atob(dataURI.split(',')[1]);
                                 var ab = new ArrayBuffer(byteString.length);
