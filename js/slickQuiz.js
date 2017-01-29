@@ -653,6 +653,24 @@
                         $(this).closest('span.certify-input').removeClass('input--filled');
                       }
                     });
+                    var nameValidator = new RegExp("/^[A-Za-z\s]+$/");
+                    var nameInput = $('span.certify-input > input').val();
+                    $('.get-certify').on('click', function() {
+                        if (nameValidator.test(nameInput)) {
+                            var certify;
+                            certify = '<div class="certify">';
+                            certify += '<img src="http://i.imgur.com/v24ae6r.jpg">';
+                            certify += '<span class="certify-username">';
+                            certify += nameInput;
+                            certify += '</span>';
+                            certify += '<span class="certify-percentage">';
+                            certify += quizPercentage;
+                            certify += '</span>';
+                            certify += '</div>';
+                        } else if (!nameInput) {
+                            new DialogFx(document.getElementById('error-dialog')).toggle(this);
+                        };
+                    });
                 }
 
                 if (plugin.config.disableRanking) {
