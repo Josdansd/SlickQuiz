@@ -680,6 +680,7 @@
                                     certify += '</span>';
                                     certify += '<div id="certifySharer" class="certify-sharer">';
                                         certify += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Compartir en Facebook';
+                                        certify += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;"/>';
                                     certify += '</div>';
                                 certify += '</div>';
                                 $quizResults.empty();
@@ -737,7 +738,7 @@
                                                     //console.log(response.images[0].source);
                                                     // Create facebook post using image
                                                     FB.api("/me/photos", "POST", {
-                                                            "message": "Hello World!",
+                                                            "message": "",
                                                             "url": response.images[0].source
                                                         },
                                                         function (response) {
