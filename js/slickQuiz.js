@@ -737,11 +737,8 @@
                                                     //console.log(response.images[0].source);
                                                     // Create facebook post using image
                                                     FB.api("/me/photos", "POST", {
-                                                            "caption": "Hello World!",
-                                                            "url": response.images[0].source,
-                                                            "privacy": {
-                                                                value: 'SELF'
-                                                            }
+                                                            "message": "Hello World!",
+                                                            "url": response.images[0].source
                                                         },
                                                         function (response) {
                                                             if (response && !response.error) {
