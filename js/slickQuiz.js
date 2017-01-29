@@ -845,7 +845,8 @@
                                 }, 1500 );
                             };
 
-                            $('#certifySharer').click(function () {
+                            $('#slickQuiz').on('click', '#quizResults > .certify > #certifySharer', function () {
+                                console.log('empezando a compartir');
                                 createCertify();
                             });
                         };
