@@ -758,6 +758,7 @@
                                     complete: function (data) {
                                         $('#announce-dialog').find('[name="announce-message"]').text('Tu certificado se ha compartido en Facebook exitosamente.');
                                         new DialogFx(document.getElementById('announce-dialog')).toggle(this);
+                                        $('#certifyCanvas').remove();
                                         new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
                                     }
                                 });
@@ -765,78 +766,80 @@
                             
                             function createCertify() {
                                 new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
-                                $quizResults.append('<canvas id="certifyCanvas" width="1000" height="1000"></canvas>');
+                                setTimeout( function() {
+                                    $quizResults.append('<canvas id="certifyCanvas" width="1000" height="1000"></canvas>');
 
-                                // Canvas Object
-                                var canvas = document.getElementById('certifyCanvas');
-                                var ctx = canvas.getContext('2d');
+                                    // Canvas Object
+                                    var canvas = document.getElementById('certifyCanvas');
+                                    var ctx = canvas.getContext('2d');
 
-                                // load image from data url
-                                var width;
-                                var height;
-                                var imageObj = new Image();
-                                imageObj.onload = function() {
-                                    width = parseInt(imageObj.width);
-                                    height = parseInt(imageObj.height);
-                                    ctx.drawImage(this, 0, 0, 1000, 1000);
+                                    // load image from data url
+                                    var width;
+                                    var height;
+                                    var imageObj = new Image();
+                                    imageObj.onload = function() {
+                                        width = parseInt(imageObj.width);
+                                        height = parseInt(imageObj.height);
+                                        ctx.drawImage(this, 0, 0, 1000, 1000);
 
-                                    // common font attributes and text positioning 
-                                    var y = 45 * width / 100;
-                                    var x = 9.25 * width / 100;
-                                    ctx.font = "50px Cinzel";
-                                    ctx.fillStyle = '#2d190a';
+                                        // common font attributes and text positioning 
+                                        var y = 45 * width / 100;
+                                        var x = 9.25 * width / 100;
+                                        ctx.font = "50px Cinzel";
+                                        ctx.fillStyle = '#2d190a';
 
-                                    // apply multiple shadows
-                                    // 1px 0px 1px #b1705c, -1px 0px 1px #8a5650, 0px 1px 1px #b5ab40
-                                    ctx.shadowColor = '#b1705c';
-                                    ctx.shadowBlur = 1;
-                                    ctx.shadowOffsetX = 1;
-                                    ctx.fillText(nameInput, x, y);
+                                        // apply multiple shadows
+                                        // 1px 0px 1px #b1705c, -1px 0px 1px #8a5650, 0px 1px 1px #b5ab40
+                                        ctx.shadowColor = '#b1705c';
+                                        ctx.shadowBlur = 1;
+                                        ctx.shadowOffsetX = 1;
+                                        ctx.fillText(nameInput, x, y);
 
-                                    ctx.shadowColor = '#8a5650';
-                                    ctx.shadowBlur = 1;
-                                    ctx.shadowOffsetX = -1;
-                                    ctx.fillText(nameInput, x, y);
+                                        ctx.shadowColor = '#8a5650';
+                                        ctx.shadowBlur = 1;
+                                        ctx.shadowOffsetX = -1;
+                                        ctx.fillText(nameInput, x, y);
 
-                                    ctx.shadowColor = '#b5ab40';
-                                    ctx.shadowBlur = 1;
-                                    ctx.shadowOffsetY = -1;
-                                    ctx.fillText(nameInput, x, y);
+                                        ctx.shadowColor = '#b5ab40';
+                                        ctx.shadowBlur = 1;
+                                        ctx.shadowOffsetY = -1;
+                                        ctx.fillText(nameInput, x, y);
 
-                                    // common font attributes and text positioning 
-                                    var yP = 53.25 * width / 100;
-                                    var xP = 36.25 * width / 100;
-                                    ctx.font = "16px Cinzel";
-                                    ctx.fillStyle = '#2d190a';
-                                    ctx.shadowColor = '#b1705c';
-                                    ctx.shadowBlur = 1;
-                                    ctx.shadowOffsetY = -1;
-                                    ctx.textAlign = "center";
-                                    ctx.fillText(quizPercentage + "%", xP, yP);
-                                    var data = $('#certifyCanvas')[0].toDataURL("image/png");
-                                    try {
-                                        blob = dataURItoBlob(data);
-                                    } catch (e) {
-                                        console.log(e);
-                                    }
-                                    FB.getLoginStatus(function (response) {
-                                        console.log(response);
-                                        if (response.status === "connected") {
-                                            postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
-                                        } else if (response.status === "not_authorized") {
-                                            FB.login(function (response) {
-                                                postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
-                                            }, {scope: "publish_actions"});
-                                        } else {
-                                            FB.login(function (response) {
-                                                postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
-                                            }, {scope: "publish_actions"});
+                                        // common font attributes and text positioning 
+                                        var yP = 53.25 * width / 100;
+                                        var xP = 36.25 * width / 100;
+                                        ctx.font = "16px Cinzel";
+                                        ctx.fillStyle = '#2d190a';
+                                        ctx.shadowColor = '#b1705c';
+                                        ctx.shadowBlur = 1;
+                                        ctx.shadowOffsetY = -1;
+                                        ctx.textAlign = "center";
+                                        ctx.fillText(quizPercentage + "%", xP, yP);
+                                        var data = $('#certifyCanvas')[0].toDataURL("image/png");
+                                        try {
+                                            blob = dataURItoBlob(data);
+                                        } catch (e) {
+                                            console.log(e);
                                         }
-                                    });
-                                };
-                                imageObj.crossOrigin = "Anonymous";
-                                // imageObj.src = 'https://cloud.githubusercontent.com/assets/20325027/22402818/70020118-e5c9-11e6-8f53-2d81f730f6e3.png';
-                                imageObj.src = 'http://i.imgur.com/v24ae6r.jpg';
+                                        FB.getLoginStatus(function (response) {
+                                            console.log(response);
+                                            if (response.status === "connected") {
+                                                postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
+                                            } else if (response.status === "not_authorized") {
+                                                FB.login(function (response) {
+                                                    postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
+                                                }, {scope: "publish_actions"});
+                                            } else {
+                                                FB.login(function (response) {
+                                                    postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
+                                                }, {scope: "publish_actions"});
+                                            }
+                                        });
+                                    };
+                                    imageObj.crossOrigin = "Anonymous";
+                                    // imageObj.src = 'https://cloud.githubusercontent.com/assets/20325027/22402818/70020118-e5c9-11e6-8f53-2d81f730f6e3.png';
+                                    imageObj.src = 'http://i.imgur.com/v24ae6r.jpg';
+                                }, 1500 );
                             };
 
                             $('#certifySharer').click(function () {
