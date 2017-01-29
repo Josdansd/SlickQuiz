@@ -724,8 +724,10 @@
                                     ctx.textAlign = "center";
                                     ctx.fillText("80%", xP, yP);
                                 };
-                                canvas.width = width;
-                                canvas.height = height;
+                                var loadedWidth = $('div.certify > img').width();
+                                var loadedHeight = $('div.certify > img').height();
+                                canvas.width = loadedWidth;
+                                canvas.height = loadedHeight;
                             };
 
                             function dataURItoBlob(dataURI) {
