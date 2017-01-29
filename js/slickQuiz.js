@@ -752,16 +752,19 @@
                                     error: function (shr, status, data) {
                                         console.log("error " + data + " Status " + shr.status);
                                         $('#error-dialog').find('[name="error-message"]').text('¡algo salió mal! recarga tu página y aségurate de que no tienes los popup bloqueados.');
-                                        new DialogFx(document.getElementById('error-dialog')).toggle(this);                                        
+                                        new DialogFx(document.getElementById('error-dialog')).toggle(this);
+                                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
                                     },
                                     complete: function (data) {
                                         $('#announce-dialog').find('[name="announce-message"]').text('Tu certificado se ha compartido en Facebook exitosamente.');
                                         new DialogFx(document.getElementById('announce-dialog')).toggle(this);
+                                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
                                     }
                                 });
                             }
                             
                             function createCertify() {
+                                new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
                                 $quizResults.append('<canvas id="certifyCanvas" width="1000" height="1000"></canvas>');
 
                                 // Canvas Object
