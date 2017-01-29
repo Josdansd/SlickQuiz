@@ -660,16 +660,25 @@
                             console.log('input lleno y con nombres válidos');
                             var certify;
                             certify = '<div class="certify">';
-                            certify += '<img src="http://i.imgur.com/v24ae6r.jpg">';
-                            certify += '<span class="certify-username">';
-                            certify += nameInput;
-                            certify += '</span>';
-                            certify += '<span class="certify-percentage">';
-                            certify += quizPercentage;
-                            certify += '</span>';
+                                certify += '<img src="http://i.imgur.com/v24ae6r.jpg">';
+                                certify += '<span class="certify-username">';
+                                    certify += nameInput;
+                                certify += '</span>';
+                                certify += '<span class="certify-percentage">';
+                                    certify += quizPercentage;
+                                certify += '</span>';
+                                certify += '<div class="certify-sharer">';
+                                    certify += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Compartir en Facebook';
+                                certify += '</div>';
                             certify += '</div>';
                             $quizResults.empty();
                             $quizResults.append(certify);
+                            html2canvas('div.certify *:not(:last-child)', {
+                                onrendered: function(canvas) {
+                                    $quizResults.remove('div.certify');
+                                    $quizResults.append(canvas);
+                                }
+                            });
                         } 
                         if (nameInput != '' && nameValidator.test(nameInput) == false) {
                             console.log('input lleno pero con nombres no válidos');
