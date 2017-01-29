@@ -751,9 +751,12 @@
                                     },
                                     error: function (shr, status, data) {
                                         console.log("error " + data + " Status " + shr.status);
+                                        $('#error-dialog').find('[name="error-message"]').text('¡algo salió mal! recarga tu página y aségurate de que no tienes los popup bloqueados.');
+                                        new DialogFx(document.getElementById('error-dialog')).toggle(this);                                        
                                     },
                                     complete: function (data) {
-                                        //console.log('Post to facebook Complete');
+                                        $('#announce-dialog').find('[name="announce-message"]').text('Tu certificado se ha compartido en Facebook exitosamente.');
+                                        new DialogFx(document.getElementById('announce-dialog')).toggle(this);
                                     }
                                 });
                             }
