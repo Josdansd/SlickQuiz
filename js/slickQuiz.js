@@ -844,12 +844,11 @@
                                     imageObj.src = 'http://i.imgur.com/v24ae6r.jpg';
                                 }, 1500 );
                             };
-
-                            $('#slickQuiz').on('click', '#quizResults > .certify > #certifySharer', function () {
-                                console.log('empezando a compartir');
-                                createCertify();
-                            });
                         };
+                        $('#slickQuiz').on('click', '#quizResults > .certify > #certifySharer', function() {
+                            console.log('empezando a compartir');
+                            createCertify();
+                        });
                         if (nameInput != '' && nameValidator.test(nameInput) == false) {
                             console.log('input lleno pero con nombres no válidos');
                             $('#error-dialog').find('[name="error-message"]').text('por favor escribe un nombre válido, sin números.');
