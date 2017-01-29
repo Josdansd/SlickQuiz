@@ -676,7 +676,7 @@
                         if (nameInput  == '') {
                             console.log('input vacio');
                             new DialogFx(document.getElementById('error-dialog')).toggle(this);
-                        };NADA
+                        };
                     });
                 }
 
