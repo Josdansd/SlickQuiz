@@ -636,7 +636,16 @@
                 
                 if ( quizPercentage > 75 ) {
                     var inputHTML;
-                    inputHTML = '<span class="certify-input certify-name input--filled">';
+                    inputHTML = '<div class="certify-congrat">':
+                        inputHTML += '<p>':
+                            inputHTML += '<b>Felicidades</b>, lograste una nota destacada en ésta prueba y ahora puedes obtener un certificado de Logos. Ten en cuenta:':
+                        inputHTML += '</p>':
+                        inputHTML += '<ul>':
+                            inputHTML += '<li>Escribe tu nombre completo para que aparezca en el certificado</li>':
+                            inputHTML += '<li>En caso de que lo vayas a compartir en Facebook, se abrirá una ventana emergente que te pedirá permiso para hacerlo. Aségurate de no tener los popups bloqueados.</li>':
+                        inputHTML += '</ul>':
+                    inputHTML += '</div>':
+                    inputHTML += '<span class="certify-input certify-name input--filled">';
                         inputHTML += '<input class="certify-field field-style" type="text" id="certifyInput">';
                         inputHTML += '<label class="certify-label label-style orange-label" for="certifyInput">';
                             inputHTML += '<span class="certify-label-content label-content-style">';
