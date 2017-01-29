@@ -769,7 +769,8 @@
                                 var width;
                                 var height;
                                 var imageObj = new Image();
-                                imageObj.src = 'http://i.imgur.com/v24ae6r.jpg';
+                                imageObj.crossOrigin = "anonymous";
+                                imageObj.src = 'https://cloud.githubusercontent.com/assets/20325027/22402818/70020118-e5c9-11e6-8f53-2d81f730f6e3.png';
                                 imageObj.onload = function() {
                                     width = parseInt(imageObj.width);
                                     height = parseInt(imageObj.height);
