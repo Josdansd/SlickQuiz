@@ -656,7 +656,8 @@
                     var nameValidator = new RegExp("/^[A-Za-z\s]+$/");
                     var nameInput = $('span.certify-input > input').val();
                     $('.get-certify').on('click', function() {
-                        if (nameValidator.test(nameInput)) {
+                        if (nameInput != '' && nameValidator.test(nameInput)) {
+                            console.log('input lleno y con nombres válidos');
                             var certify;
                             certify = '<div class="certify">';
                             certify += '<img src="http://i.imgur.com/v24ae6r.jpg">';
@@ -667,9 +668,14 @@
                             certify += quizPercentage;
                             certify += '</span>';
                             certify += '</div>';
-                        } else if (!nameInput) {
-                            new DialogFx(document.getElementById('error-dialog')).toggle(this);
+                        } else {
+                            console.log('input lleno pero con nombres inválidos');
+                            return false;
                         };
+                        if (nameInput  == '') {
+                            console.log('input vacio');
+                            new DialogFx(document.getElementById('error-dialog')).toggle(this);
+                        };NADA
                     });
                 }
 
