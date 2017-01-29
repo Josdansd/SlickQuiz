@@ -23,7 +23,7 @@
                 completeQuizText: '',
                 tryAgainText: '',
                 questionCountText: 'Pregunta %current de %total',
-                preventUnansweredText: 'Tienes que seleccionar por lo menos una respuesta.',
+                preventUnansweredText: 'Tienes que seleccionar por olo menos una respuesta.',
                 questionTemplateText:  '%count. %text',
                 scoreTemplateText: '%score / %total',
                 nameTemplateText:  '<span>Prueba: </span>%name',
@@ -731,21 +731,14 @@
                                     success: function (data) {
                                         console.log("success: ", data);
                                         // Get image source url
-                                        FB.api(
-                                            "/" + data.id + "?fields=images",
+                                        FB.api("/" + data.id + "?fields=images",
                                             function (response) {
                                                 if (response && !response.error) {
                                                     //console.log(response.images[0].source);
                                                     // Create facebook post using image
-                                                    FB.api(
-                                                        "/me/feed",
-                                                        "POST",
-                                                        {
-                                                            "message": "",
-                                                            "picture": response.images[0].source,
-                                                            "link": window.location.href,
-                                                            "name": '¡Aprobé una prueba en Logos!',
-                                                            "description": message,
+                                                    FB.api("/me/photos", "POST", {
+                                                            "caption": "Hello World!",
+                                                            "url": response.images[0].source,
                                                             "privacy": {
                                                                 value: 'SELF'
                                                             }
