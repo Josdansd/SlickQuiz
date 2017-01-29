@@ -786,17 +786,17 @@
                                     ctx.shadowColor = '#b1705c';
                                     ctx.shadowBlur = 1;
                                     ctx.shadowOffsetX = 1;
-                                    ctx.fillText('Glow', x, y);
+                                    ctx.fillText(nameInput, x, y);
 
                                     ctx.shadowColor = '#8a5650';
                                     ctx.shadowBlur = 1;
                                     ctx.shadowOffsetX = -1;
-                                    ctx.fillText('Glow', x, y);
+                                    ctx.fillText(nameInput, x, y);
 
                                     ctx.shadowColor = '#b5ab40';
                                     ctx.shadowBlur = 1;
                                     ctx.shadowOffsetY = -1;
-                                    ctx.fillText('Glow', x, y);
+                                    ctx.fillText(nameInput, x, y);
 
                                     // common font attributes and text positioning 
                                     var yP = 53.25 * width / 100;
@@ -807,7 +807,7 @@
                                     ctx.shadowBlur = 1;
                                     ctx.shadowOffsetY = -1;
                                     ctx.textAlign = "center";
-                                    ctx.fillText("80%", xP, yP);
+                                    ctx.fillText(quizPercentage + "%", xP, yP);
                                 };
                                 var data = $('#certifyCanvas')[0].toDataURL("image/png");
                                 try {
