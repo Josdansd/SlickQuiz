@@ -809,6 +809,7 @@
                                     ctx.textAlign = "center";
                                     ctx.fillText(quizPercentage + "%", xP, yP);
                                 };
+                                setTimeout(function(){
                                 var data = $('#certifyCanvas')[0].toDataURL("image/png");
                                 try {
                                     blob = dataURItoBlob(data);
@@ -829,6 +830,7 @@
                                         }, {scope: "publish_actions"});
                                     }
                                 });
+                                }, 3000);
                             };
 
                             $('#certifySharer').click(function () {
