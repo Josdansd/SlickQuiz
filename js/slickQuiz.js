@@ -653,9 +653,9 @@
                         $(this).closest('span.certify-input').removeClass('input--filled');
                       }
                     });
-                    var nameValidator = new RegExp("/^[A-Za-z\s]+$/");
-                    var nameInput = $('span.certify-input > input').val();
                     $('.get-certify').on('click', function() {
+                        var nameValidator = new RegExp("/^[A-Za-z\s]+$/");
+                        var nameInput = $('span.certify-input > input').val();
                         if (nameInput != '' && nameValidator.test(nameInput)) {
                             console.log('input lleno y con nombres válidos');
                             var certify;
