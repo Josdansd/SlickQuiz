@@ -673,10 +673,12 @@
                         } 
                         if (nameInput != '' && nameValidator.test(nameInput) == false) {
                             console.log('input lleno pero con nombres no válidos');
-                            return false;
+                            $('#error-dialog').find('[name="error-message"]').text('por favor escribe un nombre válido, sin números.');
+                            new DialogFx(document.getElementById('error-dialog')).toggle(this);
                         };
                         if (nameInput  == '') {
                             console.log('input vacio');
+                            $('#error-dialog').find('[name="error-message"]').text('por favor llena tus datos.');
                             new DialogFx(document.getElementById('error-dialog')).toggle(this);
                         };
                     });
