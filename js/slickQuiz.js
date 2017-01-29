@@ -674,7 +674,7 @@
                             $quizResults.empty();
                             $quizResults.append(certify);
                             function createCertify() {
-                                $quizResults.append('<canvas id="certifyCanvas"></canvas>');
+                                $quizResults.append('<canvas id="certifyCanvas" width="1000" height="1000"></canvas>');
 
                                 // Canvas Object
                                 var canvas = document.getElementById('certifyCanvas');
@@ -688,7 +688,7 @@
                                 imageObj.onload = function() {
                                     width = parseInt(imageObj.width);
                                     height = parseInt(imageObj.height);
-                                    ctx.drawImage(this, 0, 0);
+                                    ctx.drawImage(this, 0, 0, 1000, 1000);
 
                                     // common font attributes and text positioning 
                                     var y = 45 * width / 100;
@@ -724,10 +724,6 @@
                                     ctx.textAlign = "center";
                                     ctx.fillText("80%", xP, yP);
                                 };
-                                var loadedWidth = $('div.certify > img').width();
-                                var loadedHeight = $('div.certify > img').height();
-                                canvas.width = loadedWidth;
-                                canvas.height = loadedHeight;
                             };
 
                             function dataURItoBlob(dataURI) {
