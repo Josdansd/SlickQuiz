@@ -668,8 +668,9 @@
                             certify += quizPercentage;
                             certify += '</span>';
                             certify += '</div>';
-                        } else if (nameInput != '') {
-                            console.log('input lleno pero con nombres inválidos');
+                        } 
+                        if (nameInput != '' && nameValidator.test(nameInput) == false) {
+                            console.log('input lleno pero con nombres no válidos');
                             return false;
                         };
                         if (nameInput  == '') {
