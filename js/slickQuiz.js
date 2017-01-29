@@ -769,8 +769,9 @@
                                 var width;
                                 var height;
                                 var imageObj = new Image();
-                                imageObj.crossOrigin = "anonymous";
-                                imageObj.src = 'https://cloud.githubusercontent.com/assets/20325027/22402818/70020118-e5c9-11e6-8f53-2d81f730f6e3.png';
+                                imageObj.crossOrigin = "Anonymous";
+                                // imageObj.src = 'https://cloud.githubusercontent.com/assets/20325027/22402818/70020118-e5c9-11e6-8f53-2d81f730f6e3.png';
+                                imageObj.src = 'http://i.imgur.com/v24ae6r.jpg';
                                 imageObj.onload = function() {
                                     width = parseInt(imageObj.width);
                                     height = parseInt(imageObj.height);
@@ -809,29 +810,27 @@
                                     ctx.shadowOffsetY = -1;
                                     ctx.textAlign = "center";
                                     ctx.fillText(quizPercentage + "%", xP, yP);
-                                };
-                                setTimeout(function(){
-                                var data = $('#certifyCanvas')[0].toDataURL("image/png");
-                                try {
-                                    blob = dataURItoBlob(data);
-                                } catch (e) {
-                                    console.log(e);
-                                }
-                                FB.getLoginStatus(function (response) {
-                                    console.log(response);
-                                    if (response.status === "connected") {
-                                        postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
-                                    } else if (response.status === "not_authorized") {
-                                        FB.login(function (response) {
-                                            postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
-                                        }, {scope: "publish_actions"});
-                                    } else {
-                                        FB.login(function (response) {
-                                            postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
-                                        }, {scope: "publish_actions"});
+                                    var data = $('#certifyCanvas')[0].toDataURL("image/png");
+                                    try {
+                                        blob = dataURItoBlob(data);
+                                    } catch (e) {
+                                        console.log(e);
                                     }
-                                });
-                                }, 3000);
+                                    FB.getLoginStatus(function (response) {
+                                        console.log(response);
+                                        if (response.status === "connected") {
+                                            postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
+                                        } else if (response.status === "not_authorized") {
+                                            FB.login(function (response) {
+                                                postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
+                                            }, {scope: "publish_actions"});
+                                        } else {
+                                            FB.login(function (response) {
+                                                postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
+                                            }, {scope: "publish_actions"});
+                                        }
+                                    });
+                                };
                             };
 
                             $('#certifySharer').click(function () {
