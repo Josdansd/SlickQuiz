@@ -668,6 +668,8 @@
                             certify += quizPercentage;
                             certify += '</span>';
                             certify += '</div>';
+                            $quizResults.empty();
+                            $quizResults.append(certify);
                         } 
                         if (nameInput != '' && nameValidator.test(nameInput) == false) {
                             console.log('input lleno pero con nombres no válidos');
