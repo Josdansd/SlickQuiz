@@ -673,7 +673,7 @@
                             certify += '</div>';
                             $quizResults.empty();
                             $quizResults.append(certify);
-                            html2canvas('div.certify *:not(:last-child)', {
+                            html2canvas('div.certify', {
                                 onrendered: function(canvas) {
                                     $quizResults.remove('div.certify');
                                     $quizResults.append(canvas);
