@@ -655,7 +655,6 @@
                     inputHTML += '</span>';
                     inputHTML += '<div class="get-certify">Obtener Certificado</div>';
                     $quizResults.append(inputHTML);
-                    
                     $('span.certify-input > input').blur(function() {
                       if( $(this).val() ) {
                         $(this).closest('span.certify-input').addClass('input--filled');
@@ -663,19 +662,23 @@
                         $(this).closest('span.certify-input').removeClass('input--filled');
                       }
                     });
-                    
                     $('.get-certify').on('click', function() {
                         new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
                         var nameValidator = new RegExp(/^[A-Za-zÀ-ú\s]+$/);
                         var nameInput = $('span.certify-input > input').val();
+                        var certifySharer;
+                        certifySharer = '<div id="certifySharer" class="certify-sharer">';
+                            certifySharer += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Compartir en Facebook';
+                            certifySharer += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;"/>';
+                        certifySharer += '</div>';
+                        var fbLogger;
+                        fbLogger = '<div id="fbLogger" class="certify-sharer">';
+                            fbLogger += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Conéctate con Facebook para Compartir';
+                            fbLogger += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;"/>';
+                        fbLogger += '</div>';
                         if (nameInput != '' && nameValidator.test(nameInput)) {
                             setTimeout( function() {
                                 console.log('input lleno y con nombres válidos');
-                                var certifySharer;
-                                certifySharer = '<div id="certifySharer" class="certify-sharer">';
-                                    certifySharer += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Compartir en Facebook';
-                                    certifySharer += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;"/>';
-                                certifySharer += '</div>';
                                 var certify;
                                 certify = '<div class="certify">';
                                     certify += '<img src="http://i.imgur.com/v24ae6r.jpg">';
@@ -685,62 +688,11 @@
                                     certify += '<span class="certify-percentage">';
                                         certify += quizPercentage;
                                     certify += '</span>';
-                                
-                                    // FB SDK
-
-                                    window.fbAsyncInit = function() {
-                                        FB.init({
-                                            appId: '365482443812260',
-                                            xfbml: true,
-                                            version: 'v2.8'
-                                        });
-                                        FB.getLoginStatus(function(response) {
-                                            console.log(response);
-                                            if (response.status === "connected") {
-                                                certify += certifySharer;
-                                            } else if (response.status === "not_authorized") {
-                                                certify += '<div id="fbLogger" class="certify-sharer">';
-                                                    certify += '<i class="material-icons" style="margin-right: .25em;"></i> Conéctate con Facebook para Compartir';
-                                                    certify += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;">';
-                                                certify += '</div>';
-                                            } else {
-                                                certify += '<div id="fbLogger" class="certify-sharer">';
-                                                    certify += '<i class="material-icons" style="margin-right: .25em;"></i> Conéctate con Facebook para Compartir';
-                                                    certify += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;">';
-                                                certify += '</div>';
-                                            }
-                                        });
-                                        FB.AppEvents.logPageView();
-                                    };
-
-                                    (function(d, s, id) {
-                                        var js, fjs = d.getElementsByTagName(s)[0];
-                                        if (d.getElementById(id)) {
-                                            return;
-                                        }
-                                        js = d.createElement(s);
-                                        js.id = id;
-                                        js.src = "//connect.facebook.net/en_US/sdk.js";
-                                        fjs.parentNode.insertBefore(js, fjs);
-                                    }(document, 'script', 'facebook-jssdk'));
                                 certify += '</div>';
                                 $quizResults.empty();
                                 $quizResults.append(certify);
                                 new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
                             }, 1500);
-                            
-                            if( $('div.certify').find('#fbLogger').length ) {
-                                $('#fbLogger').on('click', function() {
-                                    new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
-                                    FB.login(function(response) {
-                                        $('#fbLogger').remove();
-                                        $('div.certify').append(certifySharer);
-                                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
-                                    }, {
-                                        scope: "publish_actions"
-                                    });
-                                });
-                            }
                             
                             function dataURItoBlob(dataURI) {
                                 var byteString = atob(dataURI.split(',')[1]);
@@ -751,6 +703,25 @@
                                 }
                                 return new Blob([ab], {type: 'image/png'});
                             }
+
+                            // FB SDK
+
+                            window.fbAsyncInit = function() {
+                                FB.init({
+                                  appId      : '365482443812260',
+                                  xfbml      : true,
+                                  version    : 'v2.8'
+                                });
+                                FB.AppEvents.logPageView();
+                            };
+
+                            (function(d, s, id){
+                                var js, fjs = d.getElementsByTagName(s)[0];
+                                if (d.getElementById(id)) {return;}
+                                js = d.createElement(s); js.id = id;
+                                js.src = "//connect.facebook.net/en_US/sdk.js";
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }(document, 'script', 'facebook-jssdk'));
                             
                             function postImageToFacebook(token, filename, mimeType, imageData, message) {
                                 var fd = new FormData();
@@ -856,13 +827,17 @@
                                         ctx.textAlign = "center";
                                         ctx.fillText(quizPercentage + "%", xP, yP);
                                         FB.getLoginStatus(function(response) {
-                                            var data = $('#certifyCanvas')[0].toDataURL("image/png");
-                                            try {
-                                                blob = dataURItoBlob(data);
-                                            } catch (e) {
-                                                console.log(e);
+                                            if (response.status === "connected" && response.status !== "not_authorized") {
+                                                var data = $('#certifyCanvas')[0].toDataURL("image/png");
+                                                try {
+                                                    blob = dataURItoBlob(data);
+                                                } catch (e) {
+                                                    console.log(e);
+                                                }
+                                                postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
+                                            } else {
+                                                return false;
                                             }
-                                            postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
                                         });
                                     };
                                     imageObj.crossOrigin = "Anonymous";
@@ -870,7 +845,33 @@
                                     imageObj.src = 'http://i.imgur.com/v24ae6r.jpg';
                                 }, 1500 );
                             };
+
+                            FB.getLoginStatus(function(response) {
+                                console.log(response);
+                                if (response.status === "connected") {
+                                    $('div.certify').append(certifySharer);
+                                } else if (response.status === "not_authorized") {
+                                    $('div.certify').append(fbLogger);
+                                } else {
+                                    $('div.certify').append(fbLogger);
+                                }
+                            });
+                            
+                            if( $('div.certify').find('#fbLogger').length ) {
+                                $('#fbLogger').on('click', function() {
+                                    new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
+                                    FB.login(function(response) {
+                                        $('#fbLogger').remove();
+                                        $('div.certify').append(certifySharer);
+                                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
+                                    }, {
+                                        scope: "publish_actions"
+                                    });
+                                });
+                            }
                         };
+                        
+                        
                         $('#slickQuiz').on('click', '.quizResults > .certify > #certifySharer', function() {
                             console.log('empezando a compartir');
                             createCertify();
