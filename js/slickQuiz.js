@@ -848,19 +848,25 @@
                                     }
                                 });
 
-                                if( $('div.certify').find('#fbLogger').length ) {
-                                    $('#fbLogger').on('click', function() {
-                                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
-                                        FB.login(function(response) {
+                            };
+                            
+                            if( $('div.certify').find('#fbLogger').length ) {
+                                $('#fbLogger').on('click', function() {
+                                    new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
+                                    FB.login(function(response) {
+                                        if (response.authResponse) {
+                                            console.log('¡Conectado!');
                                             $('#fbLogger').remove();
                                             $('div.certify').append(certifySharer);
                                             new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
-                                        }, {
-                                            scope: "publish_actions"
-                                        });
+                                        } else {
+                                            console.log('User cancelled login or did not fully authorize.');
+                                        }
+                                    }, {
+                                        scope: "publish_actions"
                                     });
-                                }
-                            };
+                                });
+                            }
                             
                             (function(d, s, id){
                                 var js, fjs = d.getElementsByTagName(s)[0];
