@@ -662,7 +662,7 @@
                         $(this).closest('span.certify-input').removeClass('input--filled');
                       }
                     });
-                    $('.get-certify').on('click', function() {
+                    $('#slickQuiz').on('click', '.get-certify', function() {
                         new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
                         var nameValidator = new RegExp(/^[A-Za-zÀ-ú\s]+$/);
                         var nameInput = $('span.certify-input > input').val();
@@ -850,8 +850,8 @@
 
                             };
                             
-                            if( $('div.certify').find('#fbLogger').length ) {
-                                $('#fbLogger').on('click', function() {
+                            if( $('#slickQuiz').find('#fbLogger').length ) {
+                                $('#slickQuiz').on('click', '#fbLogger', function() {
                                     new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
                                     FB.login(function(response) {
                                         if (response.authResponse) {
