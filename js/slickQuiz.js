@@ -693,16 +693,6 @@
                                 $quizResults.append(certify);
                                 new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
                             }, 1500);
-                            
-                            function dataURItoBlob(dataURI) {
-                                var byteString = atob(dataURI.split(',')[1]);
-                                var ab = new ArrayBuffer(byteString.length);
-                                var ia = new Uint8Array(ab);
-                                for (var i = 0; i < byteString.length; i++) {
-                                    ia[i] = byteString.charCodeAt(i);
-                                }
-                                return new Blob([ab], {type: 'image/png'});
-                            }
 
                             // FB SDK
 
@@ -713,8 +703,165 @@
                                   version    : 'v2.8'
                                 });
                                 FB.AppEvents.logPageView();
-                            };
+                            
+                                function dataURItoBlob(dataURI) {
+                                    var byteString = atob(dataURI.split(',')[1]);
+                                    var ab = new ArrayBuffer(byteString.length);
+                                    var ia = new Uint8Array(ab);
+                                    for (var i = 0; i < byteString.length; i++) {
+                                        ia[i] = byteString.charCodeAt(i);
+                                    }
+                                    return new Blob([ab], {type: 'image/png'});
+                                }
 
+                                function postImageToFacebook(token, filename, mimeType, imageData, message) {
+                                    var fd = new FormData();
+                                    fd.append("access_token", token);
+                                    fd.append("source", imageData);
+                                    fd.append("no_story", true);
+                                    // Upload image to facebook without story(post to feed)
+                                    $.ajax({
+                                        url: "https://graph.facebook.com/me/photos?access_token=" + token + '&method=post',
+                                        type: "POST",
+                                        data: fd,
+                                        processData: false,
+                                        contentType: false,
+                                        cache: false,
+                                        success: function (data) {
+                                            console.log("success: ", data);
+                                            // Get image source url
+                                            FB.api("/" + data.id + "?fields=images",
+                                                function (response) {
+                                                    if (response && !response.error) {
+                                                        //console.log(response.images[0].source);
+                                                        // Create facebook post using image
+                                                        FB.api("/me/photos", "POST", {
+                                                                "message": "",
+                                                                "url": response.images[0].source
+                                                            },
+                                                            function (response) {
+                                                                if (response && !response.error) {
+                                                                    /* handle the result */
+                                                                    console.log("Posted story to facebook");
+                                                                    console.log(response);
+                                                                }
+                                                            }
+                                                        );
+                                                    }
+                                                }
+                                            );
+                                        },
+                                        error: function (shr, status, data) {
+                                            console.log("error " + data + " Status " + shr.status);
+                                            $('#error-dialog').find('[name="error-message"]').text('¡algo salió mal! recarga tu página y aségurate de que no tienes los popup bloqueados.');
+                                            new DialogFx(document.getElementById('error-dialog')).toggle(this);
+                                            new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
+                                        },
+                                        complete: function (data) {
+                                            $('#announce-dialog').find('[name="announce-message"]').text('Tu certificado se ha compartido en Facebook exitosamente.');
+                                            new DialogFx(document.getElementById('announce-dialog')).toggle(this);
+                                            $('#certifyCanvas').remove();
+                                            new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
+                                        }
+                                    });
+                                }
+
+                                function createCertify() {
+                                    new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
+                                    setTimeout( function() {
+                                        $quizResults.append('<canvas id="certifyCanvas" width="1000" height="1000"></canvas>');
+
+                                        // Canvas Object
+                                        var canvas = document.getElementById('certifyCanvas');
+                                        var ctx = canvas.getContext('2d');
+
+                                        // load image from data url
+                                        var width;
+                                        var height;
+                                        var imageObj = new Image();
+                                        imageObj.onload = function() {
+                                            width = parseInt(imageObj.width);
+                                            height = parseInt(imageObj.height);
+                                            ctx.drawImage(this, 0, 0, 1000, 1000);
+
+                                            // common font attributes and text positioning 
+                                            var y = 45 * width / 100;
+                                            var x = 9.25 * width / 100;
+                                            ctx.font = "50px Cinzel";
+                                            ctx.fillStyle = '#2d190a';
+
+                                            // apply multiple shadows
+                                            // 1px 0px 1px #b1705c, -1px 0px 1px #8a5650, 0px 1px 1px #b5ab40
+                                            ctx.shadowColor = '#b1705c';
+                                            ctx.shadowBlur = 1;
+                                            ctx.shadowOffsetX = 1;
+                                            ctx.fillText(nameInput, x, y);
+
+                                            ctx.shadowColor = '#8a5650';
+                                            ctx.shadowBlur = 1;
+                                            ctx.shadowOffsetX = -1;
+                                            ctx.fillText(nameInput, x, y);
+
+                                            ctx.shadowColor = '#b5ab40';
+                                            ctx.shadowBlur = 1;
+                                            ctx.shadowOffsetY = -1;
+                                            ctx.fillText(nameInput, x, y);
+
+                                            // common font attributes and text positioning 
+                                            var yP = 53.25 * width / 100;
+                                            var xP = 36.25 * width / 100;
+                                            ctx.font = "16px Cinzel";
+                                            ctx.fillStyle = '#2d190a';
+                                            ctx.shadowColor = '#b1705c';
+                                            ctx.shadowBlur = 1;
+                                            ctx.shadowOffsetY = -1;
+                                            ctx.textAlign = "center";
+                                            ctx.fillText(quizPercentage + "%", xP, yP);
+                                            FB.getLoginStatus(function(response) {
+                                                if (response.status === "connected" && response.status !== "not_authorized") {
+                                                    var data = $('#certifyCanvas')[0].toDataURL("image/png");
+                                                    try {
+                                                        blob = dataURItoBlob(data);
+                                                    } catch (e) {
+                                                        console.log(e);
+                                                    }
+                                                    postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
+                                                } else {
+                                                    return false;
+                                                }
+                                            });
+                                        };
+                                        imageObj.crossOrigin = "Anonymous";
+                                        // imageObj.src = 'https://cloud.githubusercontent.com/assets/20325027/22402818/70020118-e5c9-11e6-8f53-2d81f730f6e3.png';
+                                        imageObj.src = 'http://i.imgur.com/v24ae6r.jpg';
+                                    }, 1500 );
+                                }
+
+                                FB.getLoginStatus(function(response) {
+                                    console.log(response);
+                                    if (response.status === "connected") {
+                                        $('div.certify').append(certifySharer);
+                                    } else if (response.status === "not_authorized") {
+                                        $('div.certify').append(fbLogger);
+                                    } else {
+                                        $('div.certify').append(fbLogger);
+                                    }
+                                });
+
+                                if( $('div.certify').find('#fbLogger').length ) {
+                                    $('#fbLogger').on('click', function() {
+                                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
+                                        FB.login(function(response) {
+                                            $('#fbLogger').remove();
+                                            $('div.certify').append(certifySharer);
+                                            new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
+                                        }, {
+                                            scope: "publish_actions"
+                                        });
+                                    });
+                                }
+                            };
+                            
                             (function(d, s, id){
                                 var js, fjs = d.getElementsByTagName(s)[0];
                                 if (d.getElementById(id)) {return;}
@@ -722,153 +869,6 @@
                                 js.src = "//connect.facebook.net/en_US/sdk.js";
                                 fjs.parentNode.insertBefore(js, fjs);
                             }(document, 'script', 'facebook-jssdk'));
-                            
-                            function postImageToFacebook(token, filename, mimeType, imageData, message) {
-                                var fd = new FormData();
-                                fd.append("access_token", token);
-                                fd.append("source", imageData);
-                                fd.append("no_story", true);
-                                // Upload image to facebook without story(post to feed)
-                                $.ajax({
-                                    url: "https://graph.facebook.com/me/photos?access_token=" + token + '&method=post',
-                                    type: "POST",
-                                    data: fd,
-                                    processData: false,
-                                    contentType: false,
-                                    cache: false,
-                                    success: function (data) {
-                                        console.log("success: ", data);
-                                        // Get image source url
-                                        FB.api("/" + data.id + "?fields=images",
-                                            function (response) {
-                                                if (response && !response.error) {
-                                                    //console.log(response.images[0].source);
-                                                    // Create facebook post using image
-                                                    FB.api("/me/photos", "POST", {
-                                                            "message": "",
-                                                            "url": response.images[0].source
-                                                        },
-                                                        function (response) {
-                                                            if (response && !response.error) {
-                                                                /* handle the result */
-                                                                console.log("Posted story to facebook");
-                                                                console.log(response);
-                                                            }
-                                                        }
-                                                    );
-                                                }
-                                            }
-                                        );
-                                    },
-                                    error: function (shr, status, data) {
-                                        console.log("error " + data + " Status " + shr.status);
-                                        $('#error-dialog').find('[name="error-message"]').text('¡algo salió mal! recarga tu página y aségurate de que no tienes los popup bloqueados.');
-                                        new DialogFx(document.getElementById('error-dialog')).toggle(this);
-                                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
-                                    },
-                                    complete: function (data) {
-                                        $('#announce-dialog').find('[name="announce-message"]').text('Tu certificado se ha compartido en Facebook exitosamente.');
-                                        new DialogFx(document.getElementById('announce-dialog')).toggle(this);
-                                        $('#certifyCanvas').remove();
-                                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
-                                    }
-                                });
-                            }
-                            
-                            function createCertify() {
-                                new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
-                                setTimeout( function() {
-                                    $quizResults.append('<canvas id="certifyCanvas" width="1000" height="1000"></canvas>');
-
-                                    // Canvas Object
-                                    var canvas = document.getElementById('certifyCanvas');
-                                    var ctx = canvas.getContext('2d');
-
-                                    // load image from data url
-                                    var width;
-                                    var height;
-                                    var imageObj = new Image();
-                                    imageObj.onload = function() {
-                                        width = parseInt(imageObj.width);
-                                        height = parseInt(imageObj.height);
-                                        ctx.drawImage(this, 0, 0, 1000, 1000);
-
-                                        // common font attributes and text positioning 
-                                        var y = 45 * width / 100;
-                                        var x = 9.25 * width / 100;
-                                        ctx.font = "50px Cinzel";
-                                        ctx.fillStyle = '#2d190a';
-
-                                        // apply multiple shadows
-                                        // 1px 0px 1px #b1705c, -1px 0px 1px #8a5650, 0px 1px 1px #b5ab40
-                                        ctx.shadowColor = '#b1705c';
-                                        ctx.shadowBlur = 1;
-                                        ctx.shadowOffsetX = 1;
-                                        ctx.fillText(nameInput, x, y);
-
-                                        ctx.shadowColor = '#8a5650';
-                                        ctx.shadowBlur = 1;
-                                        ctx.shadowOffsetX = -1;
-                                        ctx.fillText(nameInput, x, y);
-
-                                        ctx.shadowColor = '#b5ab40';
-                                        ctx.shadowBlur = 1;
-                                        ctx.shadowOffsetY = -1;
-                                        ctx.fillText(nameInput, x, y);
-
-                                        // common font attributes and text positioning 
-                                        var yP = 53.25 * width / 100;
-                                        var xP = 36.25 * width / 100;
-                                        ctx.font = "16px Cinzel";
-                                        ctx.fillStyle = '#2d190a';
-                                        ctx.shadowColor = '#b1705c';
-                                        ctx.shadowBlur = 1;
-                                        ctx.shadowOffsetY = -1;
-                                        ctx.textAlign = "center";
-                                        ctx.fillText(quizPercentage + "%", xP, yP);
-                                        FB.getLoginStatus(function(response) {
-                                            if (response.status === "connected" && response.status !== "not_authorized") {
-                                                var data = $('#certifyCanvas')[0].toDataURL("image/png");
-                                                try {
-                                                    blob = dataURItoBlob(data);
-                                                } catch (e) {
-                                                    console.log(e);
-                                                }
-                                                postImageToFacebook(response.authResponse.accessToken, "Canvas to Facebook/Twitter", "image/png", blob, window.location.href);
-                                            } else {
-                                                return false;
-                                            }
-                                        });
-                                    };
-                                    imageObj.crossOrigin = "Anonymous";
-                                    // imageObj.src = 'https://cloud.githubusercontent.com/assets/20325027/22402818/70020118-e5c9-11e6-8f53-2d81f730f6e3.png';
-                                    imageObj.src = 'http://i.imgur.com/v24ae6r.jpg';
-                                }, 1500 );
-                            };
-
-                            FB.getLoginStatus(function(response) {
-                                console.log(response);
-                                if (response.status === "connected") {
-                                    $('div.certify').append(certifySharer);
-                                } else if (response.status === "not_authorized") {
-                                    $('div.certify').append(fbLogger);
-                                } else {
-                                    $('div.certify').append(fbLogger);
-                                }
-                            });
-                            
-                            if( $('div.certify').find('#fbLogger').length ) {
-                                $('#fbLogger').on('click', function() {
-                                    new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
-                                    FB.login(function(response) {
-                                        $('#fbLogger').remove();
-                                        $('div.certify').append(certifySharer);
-                                        new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
-                                    }, {
-                                        scope: "publish_actions"
-                                    });
-                                });
-                            }
                         };
                         
                         
