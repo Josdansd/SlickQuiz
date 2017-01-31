@@ -634,6 +634,17 @@
                                  + quizPercentage + "%" + 
                                  '</b></div></div></div>');
                 
+                var certifySharer;
+                certifySharer = '<div id="certifySharer" class="certify-sharer">';
+                    certifySharer += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Compartir en Facebook';
+                    certifySharer += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;"/>';
+                certifySharer += '</div>';
+                var fbLogger;
+                fbLogger = '<div id="fbLogger" class="certify-sharer">';
+                    fbLogger += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Conéctate con Facebook para Compartir';
+                    fbLogger += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;"/>';
+                fbLogger += '</div>';
+                
                 if ( quizPercentage > 75 ) {
                     var inputHTML;
                     inputHTML = '<div class="certify-congrat">';
@@ -655,6 +666,7 @@
                     inputHTML += '</span>';
                     inputHTML += '<div class="get-certify">Obtener Certificado</div>';
                     $quizResults.append(inputHTML);
+                    
                     $('span.certify-input > input').blur(function() {
                       if( $(this).val() ) {
                         $(this).closest('span.certify-input').addClass('input--filled');
@@ -662,20 +674,11 @@
                         $(this).closest('span.certify-input').removeClass('input--filled');
                       }
                     });
-                    $('#slickQuiz').on('click', '.get-certify', function() {
+                    
+                    $('#slickQuiz').on('click', '.quizResults .get-certify', function() {
                         new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
                         var nameValidator = new RegExp(/^[A-Za-zÀ-ú\s]+$/);
                         var nameInput = $('span.certify-input > input').val();
-                        var certifySharer;
-                        certifySharer = '<div id="certifySharer" class="certify-sharer">';
-                            certifySharer += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Compartir en Facebook';
-                            certifySharer += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;"/>';
-                        certifySharer += '</div>';
-                        var fbLogger;
-                        fbLogger = '<div id="fbLogger" class="certify-sharer">';
-                            fbLogger += '<i class="material-icons" style="margin-right: .25em;">&#xE80D;</i> Conéctate con Facebook para Compartir';
-                            fbLogger += '<img src="http://www.wtty.solutions/wp-content/uploads/2016/12/xinovem_facebook.png" style="width: 16px; float: right; margin-top: 4px;"/>';
-                        fbLogger += '</div>';
                         if (nameInput != '' && nameValidator.test(nameInput)) {
                             setTimeout( function() {
                                 console.log('input lleno y con nombres válidos');
@@ -840,14 +843,16 @@
                                 FB.getLoginStatus(function(response) {
                                     console.log(response);
                                     if (response.status === "connected") {
+                                        console.log('Conectado, agregando #CertifySharer');
                                         $('div.certify').append(certifySharer);
                                     } else if (response.status === "not_authorized") {
+                                        console.log('Conectado pero no autorizado');
                                         $('div.certify').append(fbLogger);
                                     } else {
+                                        console.log('No conectado');
                                         $('div.certify').append(fbLogger);
                                     }
                                 });
-
                             };
                             
                             if( $('#slickQuiz').find('#fbLogger').length ) {
@@ -877,11 +882,11 @@
                             }(document, 'script', 'facebook-jssdk'));
                         };
                         
-                        
                         $('#slickQuiz').on('click', '.quizResults > .certify > #certifySharer', function() {
                             console.log('empezando a compartir');
                             createCertify();
                         });
+                        
                         if (nameInput != '' && nameValidator.test(nameInput) == false) {
                             console.log('input lleno pero con nombres no válidos');
                             $('#error-dialog').find('[name="error-message"]').text('por favor escribe un nombre válido, sin números.');
