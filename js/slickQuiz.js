@@ -655,6 +655,7 @@
                     inputHTML += '</span>';
                     inputHTML += '<div class="get-certify">Obtener Certificado</div>';
                     $quizResults.append(inputHTML);
+                    
                     $('span.certify-input > input').blur(function() {
                       if( $(this).val() ) {
                         $(this).closest('span.certify-input').addClass('input--filled');
@@ -662,6 +663,29 @@
                         $(this).closest('span.certify-input').removeClass('input--filled');
                       }
                     });
+                    
+                    // FB SDK
+
+                    window.fbAsyncInit = function() {
+                        FB.init({
+                            appId: '365482443812260',
+                            xfbml: true,
+                            version: 'v2.8'
+                        });
+                        FB.AppEvents.logPageView();
+                    };
+
+                    (function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) {
+                            return;
+                        }
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = "//connect.facebook.net/en_US/sdk.js";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));
+                    
                     $('.get-certify').on('click', function() {
                         new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
                         var nameValidator = new RegExp(/^[A-Za-zÀ-ú\s]+$/);
@@ -727,25 +751,6 @@
                                 }
                                 return new Blob([ab], {type: 'image/png'});
                             }
-
-                            // FB SDK
-
-                            window.fbAsyncInit = function() {
-                                FB.init({
-                                  appId      : '365482443812260',
-                                  xfbml      : true,
-                                  version    : 'v2.8'
-                                });
-                                FB.AppEvents.logPageView();
-                            };
-
-                            (function(d, s, id){
-                                var js, fjs = d.getElementsByTagName(s)[0];
-                                if (d.getElementById(id)) {return;}
-                                js = d.createElement(s); js.id = id;
-                                js.src = "//connect.facebook.net/en_US/sdk.js";
-                                fjs.parentNode.insertBefore(js, fjs);
-                            }(document, 'script', 'facebook-jssdk'));
                             
                             function postImageToFacebook(token, filename, mimeType, imageData, message) {
                                 var fd = new FormData();
