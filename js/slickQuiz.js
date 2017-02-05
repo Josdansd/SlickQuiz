@@ -868,6 +868,16 @@
                                         scope: "publish_actions"
                                     });
                                 }
+                                
+                                $('#slickQuiz').on('click', '.quizResults > .certify > #fbLogger', function() {
+                                    console.log('empezando la conexión');
+                                    fbLogin();
+                                });
+
+                                $('#slickQuiz').on('click', '.quizResults > .certify > #certifySharer', function() {
+                                    console.log('empezando a compartir');
+                                    createCertify();
+                                });
                             };
                             
                             (function(d, s, id){
@@ -877,15 +887,6 @@
                                 js.src = "//connect.facebook.net/en_US/sdk.js";
                                 fjs.parentNode.insertBefore(js, fjs);
                             }(document, 'script', 'facebook-jssdk'));
-                            
-                            $('#slickQuiz').on('click', '#fbLogger', function() {
-                                fbLogin();
-                            });
-
-                            $('#slickQuiz').on('click', '.quizResults > .certify > #certifySharer', function() {
-                                console.log('empezando a compartir');
-                                createCertify();
-                            });
                         };
                         
                         if (nameInput != '' && nameValidator.test(nameInput) == false) {
