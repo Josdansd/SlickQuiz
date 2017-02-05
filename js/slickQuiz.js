@@ -705,6 +705,19 @@
                                     $quizResults.empty();
                                     $quizResults.append(certify);
                                     new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
+                                    FB.getLoginStatus(function(response) {
+                                        console.log(response);
+                                        if (response.status === "connected") {
+                                            console.log('Conectado, agregando #CertifySharer que es: ' + certifySharer);
+                                            $quizResults.find('div.certify').append(certifySharer);
+                                        } else if (response.status === "not_authorized") {
+                                            console.log('Conectado pero no autorizado');
+                                            $quizResults.find('div.certify').append(fbLogger);
+                                        } else {
+                                            console.log('No conectado');
+                                            $quizResults.find('div.certify').append(fbLogger);
+                                        }
+                                    });
                                 }, 1500);
                                 
                                 function dataURItoBlob(dataURI) {
@@ -716,20 +729,6 @@
                                     }
                                     return new Blob([ab], {type: 'image/png'});
                                 }
-                                
-                                FB.getLoginStatus(function(response) {
-                                    console.log(response);
-                                    if (response.status === "connected") {
-                                        console.log('Conectado, agregando #CertifySharer');
-                                        $('div.certify').append(certifySharer);
-                                    } else if (response.status === "not_authorized") {
-                                        console.log('Conectado pero no autorizado');
-                                        $('div.certify').append(fbLogger);
-                                    } else {
-                                        console.log('No conectado');
-                                        $('div.certify').append(fbLogger);
-                                    }
-                                });
 
                                 function postImageToFacebook(token, filename, mimeType, imageData, message) {
                                     var fd = new FormData();
