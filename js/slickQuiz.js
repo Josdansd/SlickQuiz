@@ -680,23 +680,7 @@
                         var nameValidator = new RegExp(/^[A-Za-zÀ-ú\s]+$/);
                         var nameInput = $('span.certify-input > input').val();
                         if (nameInput != '' && nameValidator.test(nameInput)) {
-                            setTimeout( function() {
-                                console.log('input lleno y con nombres válidos');
-                                var certify;
-                                certify = '<div class="certify">';
-                                    certify += '<img src="http://i.imgur.com/v24ae6r.jpg">';
-                                    certify += '<span class="certify-username">';
-                                        certify += nameInput;
-                                    certify += '</span>';
-                                    certify += '<span class="certify-percentage">';
-                                        certify += quizPercentage;
-                                    certify += '</span>';
-                                certify += '</div>';
-                                $quizResults.empty();
-                                $quizResults.append(certify);
-                                new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
-                            }, 1500);
-
+                            
                             // FB SDK
 
                             window.fbAsyncInit = function() {
@@ -706,7 +690,23 @@
                                   version    : 'v2.8'
                                 });
                                 FB.AppEvents.logPageView();
-                            
+                                setTimeout( function() {
+                                    console.log('input lleno y con nombres válidos');
+                                    var certify;
+                                    certify = '<div class="certify">';
+                                        certify += '<img src="http://i.imgur.com/v24ae6r.jpg">';
+                                        certify += '<span class="certify-username">';
+                                            certify += nameInput;
+                                        certify += '</span>';
+                                        certify += '<span class="certify-percentage">';
+                                            certify += quizPercentage;
+                                        certify += '</span>';
+                                    certify += '</div>';
+                                    $quizResults.empty();
+                                    $quizResults.append(certify);
+                                    new SVGLoader(document.getElementById('loader'), {speedIn: 100}).hide();
+                                }, 1500);
+                                
                                 function dataURItoBlob(dataURI) {
                                     var byteString = atob(dataURI.split(',')[1]);
                                     var ab = new ArrayBuffer(byteString.length);
@@ -716,6 +716,20 @@
                                     }
                                     return new Blob([ab], {type: 'image/png'});
                                 }
+                                
+                                FB.getLoginStatus(function(response) {
+                                    console.log(response);
+                                    if (response.status === "connected") {
+                                        console.log('Conectado, agregando #CertifySharer');
+                                        $('div.certify').append(certifySharer);
+                                    } else if (response.status === "not_authorized") {
+                                        console.log('Conectado pero no autorizado');
+                                        $('div.certify').append(fbLogger);
+                                    } else {
+                                        console.log('No conectado');
+                                        $('div.certify').append(fbLogger);
+                                    }
+                                });
 
                                 function postImageToFacebook(token, filename, mimeType, imageData, message) {
                                     var fd = new FormData();
@@ -839,24 +853,8 @@
                                         imageObj.src = 'http://i.imgur.com/v24ae6r.jpg';
                                     }, 1500 );
                                 }
-
-                                FB.getLoginStatus(function(response) {
-                                    console.log(response);
-                                    if (response.status === "connected") {
-                                        console.log('Conectado, agregando #CertifySharer');
-                                        $('div.certify').append(certifySharer);
-                                    } else if (response.status === "not_authorized") {
-                                        console.log('Conectado pero no autorizado');
-                                        $('div.certify').append(fbLogger);
-                                    } else {
-                                        console.log('No conectado');
-                                        $('div.certify').append(fbLogger);
-                                    }
-                                });
-                            };
-                            
-                            if( $('#slickQuiz').find('#fbLogger').length ) {
-                                $('#slickQuiz').on('click', '#fbLogger', function() {
+                                
+                                function fbLogin() {
                                     new SVGLoader(document.getElementById('loader'), {speedIn: 100}).show();
                                     FB.login(function(response) {
                                         if (response.authResponse) {
@@ -870,8 +868,8 @@
                                     }, {
                                         scope: "publish_actions"
                                     });
-                                });
-                            }
+                                }
+                            };
                             
                             (function(d, s, id){
                                 var js, fjs = d.getElementsByTagName(s)[0];
@@ -881,6 +879,10 @@
                                 fjs.parentNode.insertBefore(js, fjs);
                             }(document, 'script', 'facebook-jssdk'));
                         };
+                        
+                        $('#slickQuiz').on('click', '#fbLogger', function() {
+                            fbLogin();
+                        });
                         
                         $('#slickQuiz').on('click', '.quizResults > .certify > #certifySharer', function() {
                             console.log('empezando a compartir');
