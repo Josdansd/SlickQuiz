@@ -701,6 +701,13 @@
                                         certify += '<span class="certify-percentage">';
                                             certify += quizPercentage;
                                         certify += '</span>';
+                                        certify += '<div class="sharer-message" style="display: none;">';
+                                            certify += '<input type="text" id="sharer-input" required="required" maxlength="50"/>';
+                                            certify += '<label for="sharer-input">Escribe tu mensaje </label>';
+                                            certify += '<span>';
+                                                certify += '<b>50</b> Carácteres Restantes';
+                                            certify += '</span>';
+                                        certify += '</div>';
                                     certify += '</div>';
                                     $quizResults.empty();
                                     $quizResults.append(certify);
@@ -731,6 +738,7 @@
                                 }
 
                                 function postImageToFacebook(token, filename, mimeType, imageData, message) {
+                                    var fbmessage = $('#sharer-input').val();
                                     var fd = new FormData();
                                     fd.append("access_token", token);
                                     fd.append("source", imageData);
@@ -752,7 +760,7 @@
                                                         //console.log(response.images[0].source);
                                                         // Create facebook post using image
                                                         FB.api("/me/photos", "POST", {
-                                                                "message": "",
+                                                                "message": fbmessage,
                                                                 "url": response.images[0].source
                                                             },
                                                             function (response) {
@@ -873,10 +881,37 @@
                                     console.log('empezando la conexión');
                                     fbLogin();
                                 });
+                                
+                                $('#slickQuiz').on('keyup', '.quizResults > .certify input#sharer-input', function(){
+                                    charsLeft = 50 - $(this).val().length;
+                                    $(this).closest('div').children('span').children('b').text(charsLeft);
+                                });
+                                
+                                $('#slickQuiz').on('keypress', '.quizResults > .certify input#sharer-input', function(e) {
+                                    if (e.which === 13) {
+                                        $(this).closest('.certify').find('#certifySharer').trigger('click');
+                                    }
+                                });
+                                
+                                var handlers = [
+                                    // on first click:
+                                    function() {
+                                        $('div.sharer-message').slideDown();
+                                    },
+                                    // on second click:
+                                    function() {
+                                        console.log('empezando a compartir');
+                                        createCertify();
+                                    }
+                                ];
+
+                                var counter = 0;
 
                                 $('#slickQuiz').on('click', '.quizResults > .certify > #certifySharer', function() {
-                                    console.log('empezando a compartir');
-                                    createCertify();
+                                    // call the appropriate function preserving this and any arguments
+                                    handlers[counter++].apply(this, Array.prototype.slice.apply(arguments));
+                                    // "wrap around" when all handlers have been called
+                                    counter %= handlers.length;
                                 });
                             };
                             
